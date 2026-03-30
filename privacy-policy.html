@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>미리톡 개인정보처리방침</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #141720;
+      --card: #1a1e2a;
+      --border: #252a38;
+      --accent: #ff4e6a;
+      --accent2: #ff8c42;
+      --text: #e8eaf2;
+      --muted: #7b839e;
+      --highlight: #fff0f2;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      line-height: 1.85;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      position: relative;
+      padding: 80px 24px 60px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255,78,106,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 80% 80%, rgba(255,140,66,0.10) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255,78,106,0.15);
+      border: 1px solid rgba(255,78,106,0.4);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(28px, 6vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #fff 30%, #ff8c42 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-sub {
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing: 0.3px;
+    }
+
+    .divider-line {
+      width: 48px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 2px;
+      margin: 28px auto 0;
+    }
+
+    /* NAV TOC */
+    .toc-wrap {
+      max-width: 760px;
+      margin: 0 auto 20px;
+      padding: 0 24px;
+    }
+
+    .toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .toc::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+
+    .toc-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .toc ol {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 6px 20px;
+    }
+
+    .toc ol li a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0;
+      transition: color 0.2s;
+    }
+
+    .toc ol li a::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .toc ol li a:hover {
+      color: var(--text);
+    }
+
+    .toc ol li a:hover::before {
+      background: var(--accent);
+    }
+
+    /* MAIN */
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* SECTION */
+    .section {
+      margin-bottom: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .section-header:hover {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .section-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      background: rgba(255,78,106,0.1);
+      border: 1px solid rgba(255,78,106,0.25);
+      padding: 4px 10px;
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .toggle-icon {
+      color: var(--muted);
+      font-size: 18px;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+
+    .section.collapsed .toggle-icon {
+      transform: rotate(-90deg);
+    }
+
+    .section-body {
+      padding: 28px;
+      font-size: 14px;
+      color: #b0b8d4;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .section.collapsed .section-body {
+      display: none;
+    }
+
+    .section-body p {
+      margin-bottom: 14px;
+    }
+
+    .section-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* HIGHLIGHT BOX */
+    .info-box {
+      background: rgba(255,78,106,0.06);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 13.5px;
+    }
+
+    .info-box.orange {
+      background: rgba(255,140,66,0.07);
+      border-left-color: var(--accent2);
+    }
+
+    .info-box.blue {
+      background: rgba(100,140,255,0.07);
+      border-left-color: #6495ff;
+    }
+
+    /* LIST */
+    .policy-list {
+      list-style: none;
+      margin: 12px 0;
+    }
+
+    .policy-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 7px 0;
+      font-size: 13.5px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .policy-list li:last-child {
+      border-bottom: none;
+    }
+
+    .policy-list li::before {
+      content: '›';
+      color: var(--accent);
+      font-size: 16px;
+      line-height: 1.4;
+      flex-shrink: 0;
+      font-weight: 700;
+    }
+
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 16px 0;
+    }
+
+    th {
+      background: rgba(255,78,106,0.12);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: #b0b8d4;
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    /* CONTACT CARD */
+    .contact-card {
+      background: rgba(255,78,106,0.07);
+      border: 1px solid rgba(255,78,106,0.2);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 16px 0;
+    }
+
+    .contact-card .role {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .contact-card .name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .contact-card .detail {
+      display: flex;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .contact-card .detail span:first-child {
+      color: var(--accent2);
+      min-width: 40px;
+      font-weight: 500;
+    }
+
+    .contact-card a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .contact-card a:hover {
+      color: var(--accent);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    footer .footer-logo {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    footer .eff-date {
+      margin-top: 12px;
+      padding: 8px 20px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 100px;
+      display: inline-block;
+      font-size: 12px;
+    }
+
+    /* SCROLL BAR */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .toc ol { grid-template-columns: 1fr; }
+      .section-body { padding: 20px; }
+      .section-header { padding: 18px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Privacy Policy</div>
+  <h1>개인정보처리방침</h1>
+  <p class="header-sub">미리톡 — 사기 당하기 전에, 대화내역을 미리 톡</p>
+  <div class="divider-line"></div>
+</header>
+
+<div class="toc-wrap">
+  <div class="toc">
+    <div class="toc-title">목차</div>
+    <ol>
+      <li><a href="#s1">제1조 개요 및 의의</a></li>
+      <li><a href="#s2">제2조 수집하는 개인정보</a></li>
+      <li><a href="#s3">제3조 수집 방법</a></li>
+      <li><a href="#s4">제4조 이용 목적</a></li>
+      <li><a href="#s5">제5조 보유 및 이용기간</a></li>
+      <li><a href="#s6">제6조 제3자 제공</a></li>
+      <li><a href="#s7">제7조 이용자의 권리</a></li>
+      <li><a href="#s8">제8조 보호를 위한 조치</a></li>
+      <li><a href="#s9">제9조 자동 수집 장치</a></li>
+      <li><a href="#s10">제10조 계정 삭제 요청</a></li>
+      <li><a href="#s11">제11조 적용 범위</a></li>
+      <li><a href="#s12">제12조 책임자 및 연락처</a></li>
+    </ol>
+  </div>
+</div>
+
+<main>
+
+  <!-- 제1조 -->
+  <div class="section" id="s1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">01</span>
+      <span class="section-title">개요 및 의의</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <p>미리톡(이하 "서비스")은 이용자의 동의를 기반으로 개인정보를 수집·이용·제공하며, 개인정보 자기결정권을 적극적으로 보장합니다.</p>
+      <p>본 서비스는 대한민국 <strong>정보통신망 이용촉진 및 정보보호 등에 관한 법률</strong>, <strong>개인정보보호법</strong> 등 관계 법령 및 개인정보보호 규정, 가이드라인을 준수합니다.</p>
+      <div class="info-box">
+        본 개인정보처리방침은 미리톡 앱 및 관련 서비스(모바일 앱 포함) 전체에 적용됩니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 제2조 -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">02</span>
+      <span class="section-title">수집하는 개인정보</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <p>서비스는 최소한의 개인정보만을 수집합니다.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>항목</th>
+            <th>필수/선택</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>소셜 로그인</td>
+            <td>Google 계정 정보(이름, 이메일, 프로필 사진)</td>
+            <td>필수</td>
+          </tr>
+          <tr>
+            <td>소셜 로그인</td>
+            <td>카카오 계정 정보(닉네임, 이메일, 프로필 사진)</td>
+            <td>필수</td>
+          </tr>
+          <tr>
+            <td>서비스 이용</td>
+            <td>사용자가 업로드한 채팅 캡처 이미지 및 대화 내용</td>
+            <td>필수</td>
+          </tr>
+          <tr>
+            <td>서비스 이용</td>
+            <td>기기 정보(OS, 앱 버전, 기기 식별자)</td>
+            <td>필수</td>
+          </tr>
+          <tr>
+            <td>서비스 이용</td>
+            <td>서비스 이용 기록, 접속 일시, IP 주소</td>
+            <td>자동 수집</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box orange">
+        <strong>채팅 분석 데이터:</strong> 사용자가 제출하는 의심 대화 캡처 이미지 및 텍스트는 사기 여부 분석을 위한 핵심 정보로, 분석 완료 후 <strong>1개월 보관</strong> 후 자동 삭제됩니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 제3조 -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">03</span>
+      <span class="section-title">개인정보 수집 방법</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="policy-list">
+        <li>Google 또는 카카오 소셜 로그인을 통한 인증 과정에서 수집</li>
+        <li>사용자가 앱 내에서 채팅 캡처 이미지 또는 텍스트를 직접 입력·업로드하는 경우</li>
+        <li>앱 이용 과정에서 기기 정보, 접속 로그 등이 자동으로 생성·수집</li>
+        <li>고객센터 문의(이메일) 시 상담 과정에서 수집</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 제4조 -->
+  <div class="section" id="s4">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">04</span>
+      <span class="section-title">개인정보 이용 목적</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="policy-list">
+        <li>회원 가입 및 본인 인증, 로그인 상태 유지</li>
+        <li>사용자가 제출한 채팅 내용의 사기 위험도 분석 및 결과 제공</li>
+        <li>AI 기반 분석 서비스 제공 (OpenAI API, Google AI API 활용)</li>
+        <li>서비스 품질 향상 및 신규 기능 개발</li>
+        <li>부정 이용 탐지 및 보안 강화</li>
+        <li>고객 문의 대응 및 민원 처리</li>
+        <li>법령 준수 및 분쟁 조정</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 제5조 -->
+  <div class="section" id="s5">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">05</span>
+      <span class="section-title">개인정보의 보유 및 이용기간</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <p>회원 탈퇴 요청 또는 서비스 이용 종료 시 지체 없이 파기합니다.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>보유기간</th>
+            <th>근거</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>채팅 분석 데이터 (이미지, 텍스트)</td>
+            <td><strong>1개월</strong></td>
+            <td>서비스 정책</td>
+          </tr>
+          <tr>
+            <td>회원 계정 정보</td>
+            <td>탈퇴 시 즉시 삭제</td>
+            <td>서비스 정책</td>
+          </tr>
+          <tr>
+            <td>서비스 이용 기록 / 접속 로그</td>
+            <td>3개월</td>
+            <td>통신비밀보호법</td>
+          </tr>
+          <tr>
+            <td>전자상거래 관련 기록</td>
+            <td>5년</td>
+            <td>전자상거래법</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="info-box">
+        채팅 분석 데이터는 제출일로부터 <strong>1개월 경과 후 자동으로 삭제</strong>됩니다. 삭제 전에도 사용자 요청 시 즉시 삭제 가능합니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 제6조 -->
+  <div class="section" id="s6">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">06</span>
+      <span class="section-title">개인정보의 제3자 제공</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <p>서비스는 사기 분석 기능 제공을 위해 아래 업체에 채팅 분석 데이터를 제공할 수 있습니다. 이용자는 소셜 로그인 및 서비스 이용 전 이에 동의합니다.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>제공 대상</th>
+            <th>제공 항목</th>
+            <th>이용 목적</th>
+            <th>보유 기간</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>OpenAI (ChatGPT)</td>
+            <td>채팅 내용 텍스트, 이미지</td>
+            <td>AI 기반 사기 분석</td>
+            <td>OpenAI 정책 따름</td>
+          </tr>
+          <tr>
+            <td>Google (Gemini/Vision)</td>
+            <td>채팅 내용 텍스트, 이미지</td>
+            <td>AI 기반 사기 분석</td>
+            <td>Google 정책 따름</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box orange">
+        위 제공은 <strong>익명화된 분석 목적</strong>으로만 사용되며, 각 업체의 개인정보처리방침을 함께 확인하시기 바랍니다. 법령에 따른 수사기관의 요청이 있는 경우 예외적으로 제공될 수 있습니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 제7조 -->
+  <div class="section" id="s7">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">07</span>
+      <span class="section-title">이용자의 권리 및 행사 방법</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="policy-list">
+        <li>언제든지 자신의 개인정보 열람, 수정, 삭제를 요청할 수 있습니다.</li>
+        <li>개인정보 처리의 정지를 요청할 수 있습니다.</li>
+        <li>서비스 내 계정 설정 또는 이메일로 요청 가능합니다.</li>
+        <li>요청 접수 후 지체 없이 조치하며, 제3자에게 제공된 경우 이를 통지합니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 제8조 -->
+  <div class="section" id="s8">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">08</span>
+      <span class="section-title">개인정보 보호를 위한 조치</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="policy-list">
+        <li><strong>암호화:</strong> 비밀번호, 인증 토큰 등 민감 정보는 암호화하여 저장 및 전송합니다.</li>
+        <li><strong>접근 제한:</strong> 개인정보에 대한 접근 권한을 최소화하고 관리합니다.</li>
+        <li><strong>보안 시스템:</strong> 해킹 및 바이러스 방지 시스템을 운영합니다.</li>
+        <li><strong>접속 기록:</strong> 개인정보 처리 시스템의 접근 기록을 보관·관리합니다.</li>
+        <li><strong>전송 보안:</strong> HTTPS 등 안전한 통신 방식을 사용합니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 제9조 -->
+  <div class="section" id="s9">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">09</span>
+      <span class="section-title">개인정보 자동 수집 장치</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <p>서비스 이용 과정에서 쿠키 및 유사 기술을 활용하여 이용자의 접속 정보를 자동으로 수집할 수 있습니다.</p>
+      <ul class="policy-list">
+        <li>수집 항목: 접속 IP, 접속 일시, 앱 사용 기록, 기기 정보</li>
+        <li>이용 목적: 서비스 개선, 부정 이용 탐지, 이용 통계 분석</li>
+        <li>이용자는 기기 설정을 통해 자동 수집을 거부할 수 있으나, 일부 서비스 이용이 제한될 수 있습니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 제10조 -->
+  <div class="section" id="s10">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">10</span>
+      <span class="section-title">계정 삭제 요청</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <p>서비스 내에서 계정 삭제가 어려운 경우, 아래 이메일로 요청하시면 신속하게 처리해 드립니다.</p>
+      <div class="info-box blue">
+        <strong>계정 삭제 요청 방법:</strong><br/>
+        이메일로 <strong>"계정 삭제 요청"</strong>을 제목으로 아래 주소에 보내주시면, 본인 확인 후 즉시 삭제 처리합니다.<br/>
+        삭제 시 모든 채팅 분석 데이터 및 계정 정보가 영구적으로 삭제됩니다.
+      </div>
+      <div class="contact-card">
+        <div class="role">계정 삭제 문의</div>
+        <div class="detail">
+          <span>이메일</span>
+          <span>📧 <a href="mailto:junyoungmoon9857@gmail.com">junyoungmoon9857@gmail.com</a></span>
+        </div>
+        <div class="detail">
+          <span>처리기한</span>
+          <span>요청 접수 후 영업일 기준 3일 이내</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 제11조 -->
+  <div class="section" id="s11">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">11</span>
+      <span class="section-title">개인정보처리방침의 적용 범위</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <p>본 개인정보처리방침은 미리톡 앱 및 관련 서비스(모바일 앱 포함)에 적용됩니다.</p>
+      <p>다른 서비스(Google, 카카오 등)에서 개인정보를 수집하는 경우, 해당 서비스의 개인정보처리방침이 적용됩니다.</p>
+    </div>
+  </div>
+
+  <!-- 제12조 -->
+  <div class="section" id="s12">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-num">12</span>
+      <span class="section-title">개인정보 보호 책임자 및 연락처</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="section-body">
+      <p>개인정보 관련 문의, 불만 처리, 피해 구제 등을 위해 아래 연락처로 문의하실 수 있습니다.</p>
+      <div class="contact-card">
+        <div class="role">개인정보 보호 책임자</div>
+        <div class="name">미리톡 운영팀</div>
+        <div class="detail">
+          <span>이메일</span>
+          <span><a href="mailto:junyoungmoon9857@gmail.com">junyoungmoon9857@gmail.com</a></span>
+        </div>
+      </div>
+      <div class="info-box">
+        개인정보 침해로 인한 신고나 상담이 필요한 경우, 아래 기관에 문의하실 수 있습니다.<br/>
+        • 개인정보 침해신고센터: privacy.kisa.or.kr (국번없이 118)<br/>
+        • 대검찰청 사이버수사과: www.spo.go.kr (국번없이 1301)<br/>
+        • 경찰청 사이버범죄 신고: ecrm.cyber.go.kr (국번없이 182)
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-logo">미리톡</div>
+  <p>사기 당하기 전에, 대화내역을 미리 톡</p>
+  <div class="eff-date">시행일: 2026년 03월 30일</div>
+</footer>
+
+<script>
+  // Toggle section collapse
+  function toggleSection(header) {
+    const section = header.closest('.section');
+    section.classList.toggle('collapsed');
+  }
+
+  // Intersection Observer for reveal animation
+  const sections = document.querySelectorAll('.section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+  sections.forEach((s, i) => {
+    s.style.transitionDelay = `${i * 40}ms`;
+    observer.observe(s);
+  });
+
+  // Smooth scroll for TOC links
+  document.querySelectorAll('.toc a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        // Make sure section is expanded
+        target.classList.remove('collapsed');
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
